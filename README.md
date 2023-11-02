@@ -1,3 +1,13 @@
+# OBS: deve ser usado junto com o back end do projeto-web(https://github.com/JoseAnderson-dev/projeto-web)
+projeto desenvolvido para a disciplina web.
+
+
+
+
+
+
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
