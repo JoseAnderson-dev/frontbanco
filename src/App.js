@@ -58,13 +58,76 @@ function App() {
     setObjTransacao(transacao);
   }
 
+  const remover = (id) => {
+    fetch("http://localhost:8080/transacao/" + id, {
+      method: "delete",
+      headers: {
+        "Content-type": "application/json",
+        Accept: "application/json",
+      },
+    })
+      .then((retorno) => retorno.json())
+      .then((retornoConvertidoEmJson) => {
+        if (retornoConvertidoEmJson.mensagem !== undefined) {
+          alert(retornoConvertidoEmJson.mensagem);
+        } else {
+          alert("Removido com sucesso!");
+        }
+      })
+      .then(
+        () => {
+          fetch("http://localhost:8080/transacao")
+            .then((retorno) => retorno.json())
+            .then((retornoConvertidoEmJson) => setTransacoes(retornoConvertidoEmJson));
+        }
+      );
+  };
 
+  //editar
+  const [modoCadastro, setModoCadastro] = useState("cadastro");
+
+  const editarTransacao = (transacaoParaEditar) => {
+    setModoCadastro("edicao");
+    setObjTransacao(transacaoParaEditar);
+  };
+
+  const atualizar = () => {
+    fetch("http://localhost:8080/transacao/" + objTransacao.id, {
+      method: "put",
+      body: JSON.stringify(objTransacao),
+      headers: {
+        "Content-type": "application/json",
+        Accept: "application/json",
+      },
+    })
+      .then((retorno) => retorno.json())
+      .then((retornoConvertidoEmJson) => {
+        if (retornoConvertidoEmJson.mensagem !== undefined) {
+          alert(retornoConvertidoEmJson.mensagem);
+        } else {
+          alert("Atualizado com sucesso!");
+        }
+      }).then(() => {
+        fetch("http://localhost:8080/transacao")
+          .then((retorno) => retorno.json())
+          .then((retornoConvertidoEmJson) => setTransacoes(retornoConvertidoEmJson));
+      });;
+  };
 
   return (
     <div className="App">
       {/* <p>{JSON.stringify(objTransacao)}</p> */}
-      <CadastrarTransacao obj={objTransacao} salvar={salvar} eventoTeclado={eventoDigitar} />
-      <ListarServico lista={transacoes} />
+      <CadastrarTransacao  obj={objTransacao} modo = {modoCadastro} salvar={ () => {
+            if (modoCadastro === "cadastro") {
+              salvar();
+            } else if (modoCadastro === "edicao") {
+              atualizar();
+              setModoCadastro("cadastro");
+            }
+            limparFormulario();
+          }} eventoTeclado={eventoDigitar} />
+      <ListarServico lista={transacoes} eventoRemover={remover}
+        editar={editarTransacao} />
     </div>
   );
 }

@@ -1,4 +1,4 @@
-function CadastrarTransacao({eventoTeclado,salvar,obj}) {
+function CadastrarTransacao({modo, eventoTeclado,salvar,obj}) {
   return (
     <form>
       <input type='text' value={obj.cartao} onChange={eventoTeclado} name="cartao" placeholder='Cartao' className="form-control" />
